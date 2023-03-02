@@ -17,6 +17,7 @@ import {
   calculateBalance,
   calculateExpense,
   calculateIncome,
+  deleteItem,
 } from "../redux/ExpenseSlice";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -59,8 +60,11 @@ const Home: React.FC = () => {
       },
     });
 
-  const deleteEntry: MouseEventHandler = () => {
-    alert("deleteEntry");
+  const deleteEntry = (time: string) => {
+    dispatch(deleteItem(time));
+    dispatch(calculateBalance());
+    dispatch(calculateExpense());
+    dispatch(calculateIncome());
   };
   const data = {
     labels: ["Total Balance", "Expense", "Income"],
@@ -151,27 +155,31 @@ const Home: React.FC = () => {
           {expenseHistory.length == 0
             ? "No Transaction"
             : expenseHistory.map((transaction, index) => (
-                <li
-                  className={`list-none bg-[#FCFCFC] p-2 border-l-4 ${
-                    transaction.amount < 0
-                      ? "border-red-700"
-                      : "border-green-700"
-                  }  m-4 cursor-pointer`}
-                  title="Delete"
-                  key={index}
-                  onClick={deleteEntry}
-                >
-                  <div>
-                    <div className="flex justify-between">
-                      <span>{transaction.text}</span>
-                      <span>{`$ ${transaction.amount}`}</span>
+                <div key={index}>
+                  <li
+                    className={`list-none bg-[#FCFCFC] p-2 border-l-4 ${
+                      transaction.amount < 0
+                        ? "border-red-700"
+                        : "border-green-700"
+                    }  m-4 cursor-pointer`}
+                    title="Delete"
+                    onDoubleClick={() => deleteEntry(transaction.time)}
+                  >
+                    <div>
+                      <div className="flex justify-between">
+                        <span>{transaction.text}</span>
+                        <span>{`$ ${transaction.amount}`}</span>
+                      </div>
+                      <div className="text-end mt-3">
+                        <span>{transaction.time}</span>
+                      </div>
                     </div>
-                    <div className="text-end mt-3">
-                      <span>{transaction.time}</span>
-                    </div>
-                  </div>
-                </li>
+                  </li>
+                </div>
               ))}
+          <h3 className="text-xl font-semibold text-red-600 text-center">
+            Double Click to Delete the Entry
+          </h3>
         </section>
       </div>
     </div>

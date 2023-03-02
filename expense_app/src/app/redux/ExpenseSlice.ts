@@ -45,7 +45,7 @@ export const ExpenseSlice = createSlice({
     calculateExpense: (state) => {
       state.expense = state.expenseHistory.reduce((acc, item) => {
         if (item.amount < 0) {
-          return Math.abs(acc + item.amount);
+          return Math.abs(acc - item.amount);
         }
         return acc;
       }, 0);
@@ -59,6 +59,12 @@ export const ExpenseSlice = createSlice({
         return acc;
       }, 0);
     },
+    //this functio will delete the item
+    deleteItem: (state, action) => {
+      state.expenseHistory = state.expenseHistory.filter(
+        (ex) => ex.time != action.payload
+      );
+    },
   },
 });
 
@@ -67,6 +73,7 @@ export const {
   addTransaction,
   calculateExpense,
   calculateIncome,
+  deleteItem,
 } = ExpenseSlice.actions;
 
 export default ExpenseSlice.reducer;
