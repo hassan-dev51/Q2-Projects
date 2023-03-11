@@ -12,7 +12,7 @@ const Hobbies = () => {
       </div>
       <div className="flex md:flex-row flex-col justify-evenly mt-4 text-gray-400 font-normal text-2xl">
         <h2>Reading</h2>
-        <h2>Martial Arts</h2>
+        <h2>Martial Arts (Black Belt)</h2>
         <h2>Music</h2>
         <h2>Cricket</h2>
       </div>
